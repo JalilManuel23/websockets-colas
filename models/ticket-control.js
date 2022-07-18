@@ -49,7 +49,7 @@ class TicketControl {
         this.tickets.push( ticket );
 
         this.guardarDB();
-        return 'Ticket ' + this.numero;
+        return 'Ticket ' + ticket.numero;
     }
 
     atenderTicket( escritorio ) {
@@ -57,7 +57,19 @@ class TicketControl {
         if( this.tickets.length === 0 ) {
             return null;
         }
-        
+
+        const ticket = this.tickets.shift();
+        ticket.escritorio = escritorio;
+
+        this.ultimos4.unshift( ticket );
+
+        if( this.ultimos4.length > 4 ) {
+            this.ultimos4.splice(-1, 1);
+        }
+
+        this.guardarDB();
+
+        return ticket;
     }
 }
 
